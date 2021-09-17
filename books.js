@@ -77,7 +77,7 @@ function submitForm(e) {
     let readInput = document.querySelector("#myRead").isChecked;
 
     if( authorInput != "" && titleInput!="" && pagesInput !="") {
-        let newBook = new Book(titleInput,authorInput,pagesInput,readInput);
+        let newBook = new Book(titleInput,authorInput,Math.round(pagesInput),readInput);
         addBookToLibrary(newBook);
         displayBooks();
         modal.style.display = "none";
