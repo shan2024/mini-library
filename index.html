@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="books.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <h1>Mini-Library</h1>
+        <button class="add">Add Book</button>
+    </header>
+    <div class="library"></div>
+
+    <div id="myModal" class="modal">
+
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="form">
+                <p>Add New Book</p>
+                <input type="text" placeholder=" Title" name="title" id="myTitle" required>
+                <input type="text" placeholder=" Author" name="author" id="myAuthor" required>
+                <input type="number" placeholder=" Pages" name="pages" id="myPages" required>
+                <div class="read-container">
+                    <label for="read">Read/Unread</label>
+                    <input type="checkbox" name="readOrNot" value="read" id="myRead">
+
+                </div>
+                <button class="form-submit" type="button">Submit</button>
+            </div>
+        </div>
+
+    </div>
+    <footer>Created By Seulchan Han</footer>
+
+</body>
+
+</html>
