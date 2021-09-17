@@ -1,4 +1,30 @@
-let myLibrary  = [];
+
+
+function storageAvailable(type) {
+    var storage;
+    try {
+        storage = window[type];
+        var x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch(e) {
+        return e instanceof DOMException && (
+            // everything except Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            (storage && storage.length !== 0);
+    }
+}
+
 
 function Book( title , author, pages, read) {
 
@@ -21,9 +47,14 @@ function Book( title , author, pages, read) {
 
 function addBookToLibrary( book) {
     myLibrary.push(book);
+
+    if (storageAvailable('localStorage')) {
+        localStorage.setItem( 'storedLibrary', JSON.stringify(myLibrary) );
+    }
 }
 
 function displayBooks() {
+    
     while (library.firstChild) {
         library.removeChild(library.firstChild);
     }
@@ -76,6 +107,10 @@ function submitForm(e) {
     let pagesInput = document.querySelector("#myPages").value;
     let readInput = document.querySelector("#myRead").isChecked;
 
+    if (pagesInput<0){
+        pagesInput*=-1;
+    }
+
     if( authorInput != "" && titleInput!="" && pagesInput !="") {
         let newBook = new Book(titleInput,authorInput,Math.round(pagesInput),readInput);
         addBookToLibrary(newBook);
@@ -97,15 +132,24 @@ function toggleRead(e) {
 }
 
 function removeBook(e){
-    console.log(e.target.id);
     myLibrary.splice( e.target.id, 1);
+    localStorage.setItem("storedLibrary", JSON.stringify(myLibrary));
     displayBooks();
 }
 
-let hobbit = new Book("The Hobbit","JR Tolkien",304,true);
+let myLibrary  = [new Book("The Hobbit","JR Tolkien",304,true)];
 
-addBookToLibrary(hobbit);
-//console.log(myLibrary);
+if (storageAvailable('localStorage')) {
+    if (!localStorage.getItem('storedLibrary')) {
+        localStorage.setItem('storedLibrary', JSON.stringify(myLibrary));
+    }
+    else {
+        myLibrary = JSON.parse(localStorage.getItem("storedLibrary"));
+
+    }
+}
+
+
 let library = document.querySelector(".library");
 displayBooks();
 
@@ -135,6 +179,8 @@ window.onclick = function(event) {
 
 let submit = document.querySelector(".form-submit");
 submit.addEventListener("click", submitForm);
+
+
 
 
 
